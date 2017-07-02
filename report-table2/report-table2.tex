@@ -1,0 +1,220 @@
+\documentclass[bachelor, och, pract]{SCWorks}
+% параметр - тип обучения - одно из значений:
+%    spec     - специальность
+%    bachelor - бакалавриат (по умолчанию)
+%    master   - магистратура
+% параметр - форма обучения - одно из значений:
+%    och   - очное (по умолчанию)
+%    zaoch - заочное
+% параметр - тип работы - одно из значений:
+%    referat    - реферат
+%    coursework - курсовая работа (по умолчанию)
+%    diploma    - дипломная работа
+%    pract      - отчет по практике
+%    pract      - отчет о научно-исследовательской работе
+%    autoref    - автореферат выпускной работы
+%    assignment - задание на выпускную квалификационную работу
+%    review     - отзыв руководителя
+%    critique   - рецензия на выпускную работу
+% параметр - включение шрифта
+%    times    - включение шрифта Times New Roman (если установлен)
+%               по умолчанию выключен
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage{graphicx}
+
+\usepackage[sort,compress]{cite}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage[english,russian]{babel}
+
+\usepackage[colorlinks=true]{hyperref}
+
+\newcommand{\eqdef}{\stackrel {\rm def}{=}}
+\newcommand{\No}{\textnumero}
+\newtheorem{lem}{Лемма}
+
+\lstset{
+	breaklines=true, 
+	language=C,
+	numberstyle=\tiny, 
+	numbers=left, 
+	columns=flexible,
+	keepspaces=false, 
+	basicstyle=\small,
+    tabsize=2,
+	inputencoding=cp1251
+}
+\begin{document}
+
+\section{Работа с табличными данными. Часть 2}
+
+    \textsc{Задание.} Необходимо представить двумерный массив в виде таблицы \verb"DataGridView", содержащей произвольное количество строк и столбцов. Предусмотреть возможность добавления и удаления строк и столбцов. Провести проверку на ввод чисел. Все строки, содержащие минимальный элемент, заменить строкой \verb"X".
+
+    Создано окно приложения, содержащее три элемента \verb"DataGridView", пять элементов \verb"Button" и три элемента \verb"Label". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:table2-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-1.png}
+        \caption{Окно приложения <<Таблица 2>>, открытое в конструкторе}\label{fig:table2-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:table2-attr}.
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Таблица 2>>}\label{tab:table2-attr}\cr\hline
+        \endfirsthead
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Таблица 2"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInput"\cr\hline
+        \verb"Text" & \verb"Входные данные"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblOutput"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей надписи}\cr\hline
+        \verb"(Name)" & \verb"lblTask"\cr\hline
+        \verb"Text" & \parbox{11cm}{\verb"Заменить все строки с минимальным элементом на заданную строку"}\cr\hline
+        \multicolumn{2}{|l|}{Для первой таблицы}\cr\hline
+        \verb"(Name)" & \verb"dataGridInput"\cr\hline
+        \multicolumn{2}{|l|}{Для второй таблицы}\cr\hline
+        \verb"(Name)" & \verb"dataGridOutput"\cr\hline
+        \verb"AllowUserToAddRows" & \verb"False"\cr\hline
+        \verb"AllowUserToDeleteRows" & \verb"False"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей таблицы}\cr\hline
+        \verb"(Name)" & \verb"dataGridRow"\cr\hline
+        \verb"AllowUserToAddRows" & \verb"False"\cr\hline
+        \verb"AllowUserToDeleteRows" & \verb"False"\cr\hline
+        
+        \multicolumn{2}{|l|}{Для первой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRowAdd"\cr\hline
+        \verb"Text" & \verb"Добавить строку"\cr\hline
+        \multicolumn{2}{|l|}{Для второй кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRowRemove"\cr\hline
+        \verb"Text" & \verb"Удалить строку"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnColAdd"\cr\hline
+        \verb"Text" & \verb"Добавить столбец"\cr\hline
+
+        \multicolumn{2}{|l|}{Для четвертой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnColRemove"\cr\hline
+        \verb"Text" & \verb"Удалить столбец"\cr\hline
+        \multicolumn{2}{|l|}{Для пятой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnColAdd"\cr\hline
+        \verb"Text" & \verb"Получить результат"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+        \end{longtable}
+
+    На нажатие кнопки <<Добавить строку>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=256, lastline=256]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Удалить строку>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=256, lastline=264]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Добавить столбец>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=259, lastline=264]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Удалить столбец>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=267, lastline=272]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Получить результат>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=275, lastline=402столбец]{sources/table2/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:table2-02}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-2.png}
+        \caption{Окно приложения <<Таблица 2>>: начальный запуск}\label{fig:table2-02}
+    \end{figure}
+
+    При нажатии кнопки <<Добавить строку>> в таблицу добавляется новая строка (см. рисунок~\ref{fig:table2-03}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-3.png}
+        \caption{Окно приложения <<Таблица 2>>: добавление новой строки}\label{fig:table2-03}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить строку>> из таблицы удаляется выбранная строка (см. рисунок~\ref{fig:table2-04}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-4.png}
+        \caption{Окно приложения <<Таблица 2>>: удаление строки}\label{fig:table2-04}
+    \end{figure}
+
+    При нажатии кнопки <<Добавить столбец>> в таблицу и строку замены добавляется новый столбец (см. рисунок~\ref{fig:table2-05}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-5.png}
+        \caption{Окно приложения <<Таблица 2>>: добавление столбца}\label{fig:table2-05}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить столбец>> из таблицы и из строки замены удаляется выбранный столбец (см. рисунок~\ref{fig:table2-06}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-6.png}
+        \caption{Окно приложения <<Таблица 2>>: удаление столбца}\label{fig:table2-06}
+    \end{figure}
+
+    При корректном вводе все строки, в которых есть минимальный элемент, заменяются строкой замены. Результат выводится в новую таблицу (см. рисунок~\ref{fig:table2-07}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.7]{images/table2/table2-7.png}
+        \caption{Окно приложения <<Таблица 2>>: корректные данные}\label{fig:table2-07}
+    \end{figure}
+
+    При попытке замены строк из таблицы, в которой нет ни одной строки, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-08}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-8.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение об отсутствии строк}\label{fig:table2-08}
+    \end{figure}
+
+    При попытке замены строк из таблицы, в которой есть пустые ячейки, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-09}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-9.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о пустых ячейках}\label{fig:table2-09}
+    \end{figure}
+
+    При попытке замены строк из таблицы, в ячейках которой есть не целые числа, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-10}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-10.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о наличии не целых чисел в строке}\label{fig:table2-10}
+    \end{figure}
+
+    При попытке ввода пустых ячеек в строке замены возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-11}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-11.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о пустых ячейках строки}\label{fig:table2-11}
+    \end{figure}
+
+    При попытке ввода строки, в ячейках которой есть не целые числа, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-12}).
+    \begin{figure}[!ht]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-12.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о наличии не целых чисел в строке}\label{fig:table2-12}
+    \end{figure}
+
+Полный код программы приведен в приложении~\ref{app:listing}.
+
+\appendix
+\section{Листинг файлов проекта}\label{app:listing}
+
+\subsection{Листинг файла table.cpp}
+\lstinputlisting{sources/table2/table.cpp}
+
+\subsection{Листинг файла MyForm.h}
+\lstinputlisting{sources/table2/MyForm.h}
+
+\end{document}

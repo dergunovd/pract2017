@@ -1,0 +1,1073 @@
+\documentclass[bachelor, och, pract]{SCWorks}
+% параметр - тип обучения - одно из значений:
+%    spec     - специальность
+%    bachelor - бакалавриат (по умолчанию)
+%    master   - магистратура
+% параметр - форма обучения - одно из значений:
+%    och   - очное (по умолчанию)
+%    zaoch - заочное
+% параметр - тип работы - одно из значений:
+%    referat    - реферат
+%    coursework - курсовая работа (по умолчанию)
+%    diploma    - дипломная работа
+%    pract      - отчет по практике
+%    pract      - отчет о научно-исследовательской работе
+%    autoref    - автореферат выпускной работы
+%    assignment - задание на выпускную квалификационную работу
+%    review     - отзыв руководителя
+%    critique   - рецензия на выпускную работу
+% параметр - включение шрифта
+%    times    - включение шрифта Times New Roman (если установлен)
+%               по умолчанию выключен
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage{graphicx}
+
+\usepackage[sort,compress]{cite}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{float}
+\usepackage[english,russian]{babel}
+
+\usepackage[colorlinks=true]{hyperref}
+
+\newcommand{\eqdef}{\stackrel {\rm def}{=}}
+\newcommand{\No}{\textnumero}
+\newtheorem{lem}{Лемма}
+
+\lstset{
+    breaklines=true, 
+    language=C++, 
+    numberstyle=\tiny, 
+    numbers=left, 
+    columns=flexible,
+    keepspaces=false, 
+    basicstyle=\small,
+    tabsize=2,
+    inputencoding=cp1251
+}
+
+\begin{document}
+
+% Кафедра (в родительном падеже)
+\chair{математической кибернетики и компьютерных наук}
+
+% Тема работы
+\title{Разработка приложений Windows.Forms на языке C++ в среде Microsoft Visual Studio}
+
+% Курс
+\course{1}
+
+% Группа
+\group{151}
+
+% Факультет (в родительном падеже) (по умолчанию "факультета КНиИТ")
+%\department{факультета КНиИТ}
+
+% Специальность/направление код - наименование
+%\napravlenie{02.03.02 "--- Фундаментальная информатика и информационные технологии}
+%\napravlenie{02.03.01 "--- Математическое обеспечение и администрирование информационных систем}
+%\napravlenie{09.03.01 "--- Информатика и вычислительная техника}
+\napravlenie{09.03.04 "--- Программная инженерия}
+%\napravlenie{10.05.01 "--- Компьютерная безопасность}
+
+% Для студентки. Для работы студента следующая команда не нужна.
+%\studenttitle{Студентки}
+
+% Фамилия, имя, отчество в родительном падеже
+\author{Дергунова Дмитрия Витальевича}
+
+% Заведующий кафедрой
+\chtitle{к.\,ф.-м.\,н.} % степень, звание
+\chname{С.\,В.\,Миронов}
+
+%Научный руководитель (для реферата преподаватель проверяющий работу)
+\satitle{Зав.\,каф.\,техн.\,прогр., к.\,ф.-м.\,н.} %должность, степень, звание
+\saname{И.\,А.\,Батраева}
+
+% Руководитель практики от организации (только для практики,
+% для остальных типов работ не используется)
+\patitle{Зав.\,каф.\,техн.\,прогр., к.\,ф.-м.\,н.}
+\paname{И.\,А.\,Батраева}
+
+% Семестр (только для практики, для остальных
+% типов работ не используется)
+\term{2}
+
+% Наименование практики (только для практики, для остальных
+% типов работ не используется)
+\practtype{учебная}
+
+% Продолжительность практики (количество недель) (только для практики,
+% для остальных типов работ не используется)
+\duration{2}
+
+% Даты начала и окончания практики (только для практики, для остальных
+% типов работ не используется)
+\practStart{30.06.2017}
+\practFinish{13.07.2017}
+
+% Год выполнения отчета
+\date{2017}
+
+\maketitle
+
+% Включение нумерации рисунков, формул и таблиц по разделам
+% (по умолчанию - нумерация сквозная)
+% (допускается оба вида нумерации)
+%\secNumbering
+
+% Путь к скриншотам
+%\graphicspath{{.//}}
+
+\tableofcontents
+\intro
+Целью практики является освоение механизма построения оконного интерфейса приложений в среде Visual Studio \cite{MSDN1}.
+
+В результате прохождения практики должны быть отработаны навыки
+\begin{itemize}
+    \item создания нового проекта;
+    \item добавления и настройки элементов управления;
+    \item отладка корректного ввода данных для решения поставленной задачи;
+    \item разработки алгоритма решения поставленной задачи с использованием оконного интерфейса;
+    \item тестирования приложения;
+    \item документирования разработанного кода.
+\end{itemize}
+
+\section{Приложение для вычисления факториала}
+
+    \textsc{Задание.} Реализовать приложение для вычисления факториала.
+
+    Создано окно приложения, содержащее два элемента \verb"TextBox", два элемента \verb"Label" и один элемент \verb"Button". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:fact-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/fact/fact-1.png}
+        \caption{Окно приложения <<Факториал>> открытое в конструкторе}\label{fig:fact-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:fact-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Факториал>>}\label{tab:fact-attr}\cr\hline
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Факториал"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInput"\cr\hline
+        \verb"Text" & \verb"Введите целое число"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblOutput"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtInput"\cr\hline
+        \multicolumn{2}{|l|}{Для второго текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtOutput"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnCalculate"\cr\hline
+        \verb"Text" & \verb"Вычислить"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{longtable}
+    \normalsize
+    
+    Была написана функция вычисления факториала:
+    \lstinputlisting[firstline=2, lastline=10]{sources/fact/fact.cpp}
+
+    На нажатие кнопки <<Вычислить>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=145, lastline=165]{sources/fact/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:fact-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/fact/fact-2.png}
+        \caption{Окно приложения <<Факториал>>: начальный запуск}\label{fig:fact-02}
+    \end{figure}
+
+    При вводе целого числа после нажатия кнопки в поле вывода приводится результат вычисления факториала для заданного числа (см. рисунок~\ref{fig:fact-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/fact/fact-3.png}
+        \caption{Окно приложения <<Факториал>>: корректное вычисление}\label{fig:fact-03}
+    \end{figure}
+
+    При вводе некорректного значения возникает сообщение об ошибке (см. рисунок~\ref{fig:fact-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/fact/fact-4.png}
+        \caption{Окно приложения <<Факториал>>: сообщение о некорректном вводе}\label{fig:fact-04}
+    \end{figure}
+
+    При вводе слишком большого положительного числа возникает сообщение об ошибке (см. рисунок~\ref{fig:fact-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/fact/fact-5.png}
+        \caption{Окно приложения <<Факториал>>: ввод слишком большого положительного числа}\label{fig:fact-05}
+    \end{figure}
+
+    При вводе отрицательного числа возникает сообщение об ошибке (см. рисунок~\ref{fig:fact-06}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/fact/fact-6.png}
+        \caption{Окно приложения <<Факториал>>: ввод отрицательного числа}\label{fig:fact-06}
+    \end{figure}
+
+Полный код программы приведен в приложении~\ref{app:USB}.
+
+\section{Приложение для вычисления простой функции}
+
+    \textsc{Задание.} Реализовать приложение для вычисления функции 
+    \[
+        \frac{\sin^2{x} + y^2}{(y-4)\sqrt{x^2 - 2x + 1}}
+    \]
+
+    Создано окно приложения, содержащее три элемента \verb"TextBox", три элемента \verb"Label" и один элемент \verb"Button". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:simple-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/simple/simple-1.png}
+        \caption{Окно приложения <<Простые вычисления>> открытое в конструкторе}\label{fig:simple-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:simple-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Простые вычисления>>}\label{tab:simple-attr}\cr\hline
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Простые вычисления"\cr\hline
+        \verb"MaximizeBox" & \verb"False"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInputX"\cr\hline
+        \verb"Text" & \verb"Введите целое число"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInputY"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей надписи}\cr\hline
+        \verb"(Name)" & \verb"lblOutput"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtInputX"\cr\hline
+        \multicolumn{2}{|l|}{Для второго текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtInputY"\cr\hline
+        \multicolumn{2}{|l|}{Для третьего текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtOutput"\cr\hline
+        \verb"(ReadOnly)" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnCalculate"\cr\hline
+        \verb"Text" & \verb"Вычислить"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{longtable}
+    \normalsize
+
+    Была написана функция вычисления выражения:
+    \lstinputlisting[firstline=3, lastline=6]{sources/simple/count.cpp}
+
+    На нажатие кнопки <<Вычислить>> установлено выполнение следующего кода:
+    \lstinputlisting[language=C,firstline=173, lastline=206]{sources/simple/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:simple-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.65]{images/simple/simple-5.png}
+        \caption{Окно приложения <<Простые вычисления>>: начальный запуск}\label{fig:simple-05}
+    \end{figure}
+
+    При вводе целых чисел после нажатия кнопки в поле вывода приводится результат вычисления функции для заданных чисел (см. рисунок~\ref{fig:simple-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.65]{images/simple/simple-2.png}
+        \caption{Окно приложения <<Простые вычисления>>: корректное вычисление}\label{fig:simple-02}
+    \end{figure}
+
+    При вводе значений, не попадающих в ОДЗ, возникает сообщение об ошибке (см. рисунок~\ref{fig:simple-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.65]{images/simple/simple-3.png}
+        \caption{Окно приложения <<Простые вычисления>>: сообщение о вводе числа, не попадающего в ОДЗ}\label{fig:simple-03}
+    \end{figure}
+
+    При вводе некорректных значений возникает сообщение об ошибке (см. рисунок~\ref{fig:simple-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.65]{images/simple/simple-4.png}
+        \caption{Окно приложения <<Простые вычисления>>: сообщение о некорректном вводе}\label{fig:simple-04}
+    \end{figure}
+
+Полный код программы приведен в приложении~\ref{app:USB}.
+
+\section{Приложение для вычисления рекурсивной функции}
+
+    \textsc{Задание.} Реализовать приложение для вычисления рекурсивной функции 
+    \[
+        S = \sqrt{ 1+ 2\sqrt{1 + 3\sqrt{1 + 4\sqrt{1 + \dots + n}}}}
+    \]
+    Создано окно приложения, содержащее два элемента \verb"TextBox", два элемента \verb"Label" и один элемент \verb"Button". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:recur-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/recur/recur-1.png}
+        \caption{Окно приложения <<Рекуррентные вычисления>> открытое в конструкторе}\label{fig:recur-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:recur-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Простые вычисления>>}\label{tab:recur-attr}\cr\hline
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Рекуррентные вычисления"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInput"\cr\hline
+        \verb"Text" & \verb"Введите N"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblOutput"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtInput"\cr\hline
+        \multicolumn{2}{|l|}{Для второго текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtOutput"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnCalculate"\cr\hline
+        \verb"Text" & \verb"Вычислить"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{longtable}
+    \normalsize
+
+    Была написана функция вычисления выражения:
+    \lstinputlisting[firstline=2, lastline=9]{sources/recur/recur.cpp}
+
+    На нажатие кнопки <<Вычислить>> установлено выполнение следующего кода:
+    \lstinputlisting[language=C,firstline=133, lastline=150]{sources/recur/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:recur-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/recur/recur-2.png}
+        \caption{Окно приложения <<Рекуррентные вычисления>>: начальный запуск}\label{fig:recur-02}
+    \end{figure}
+
+    При вводе целого числа после нажатия кнопки в поле вывода приводится результат вычисления функции для заданного числа (см. рисунок~\ref{fig:recur-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/recur/recur-3.png}
+        \caption{Окно приложения <<Рекуррентные вычисления>>: корректное вычисление}\label{fig:recur-03}
+    \end{figure}
+
+    При вводе не целого числа возникает сообщение об ошибке (см. рисунок~\ref{fig:recur-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/recur/recur-4.png}
+        \caption{Окно приложения <<Рекуррентные вычисления>>: сообщение о некорректном вводе}\label{fig:recur-04}
+    \end{figure}
+
+    При вводе неположительного числа возникает сообщение об ошибке (см. рисунок~\ref{fig:recur-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/recur/recur-5.png}
+        \caption{Окно приложения <<Рекуррентные вычисления>>: сообщение о вводе неположительного числа}\label{fig:recur-05}
+    \end{figure}
+
+Полный код программы приведен в приложении~\ref{app:USB}.
+       
+\section{Обработка табличных данных. Часть 1}
+
+    \textsc{Задание.} Дан одномерный массив, содержащий целые числа. Представить его в виде
+    таблицы, содержащий один столбец. Предусмотреть возможность добавления
+    и удаления строк. Найти среднее арифметическое нечетных элементов, не попадающих в
+    заданный интервал \verb"[a, b]". Если таких элементов нет, вывести сообщение
+    об этом.
+
+    Создано окно приложения, содержащее три элемента \verb"TextBox", четыре элемента \verb"Label", три элемента \verb"Button" и один элемент \verb"DataGridView". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:table1-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/table1/table1-1.png}
+        \caption{Окно приложения <<Таблица>> открытое в конструкторе}\label{fig:table1-01}
+    \end{figure}
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:table1-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Таблица>>}\label{tab:table1-attr}\cr\hline
+        \endfirsthead
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Таблица"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblTask"\cr\hline
+        \verb"Text" & \parbox{11cm}{\verb"Среднее арифметическое нечетных чисел не попадающих в интервал"}\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblFrom"\cr\hline
+        \verb"Text" & \verb"от"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей надписи}\cr\hline
+        \verb"(Name)" & \verb"lblTo"\cr\hline
+        \verb"Text" & \verb"до"\cr\hline
+        \multicolumn{2}{|l|}{Для четвертой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblResult"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для первой таблицы}\cr\hline
+        \verb"(Name)" & \verb"GridNumbers"\cr\hline
+        \multicolumn{2}{|l|}{Для первой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnAdd"\cr\hline
+        \verb"Text" & \verb"Добавить"\cr\hline
+        \multicolumn{2}{|l|}{Для второй кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRemove"\cr\hline
+        \verb"Text" & \verb"Удалить"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnResult"\cr\hline
+        \verb"Text" & \verb"Посчитать"\cr\hline
+        \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtFrom"\cr\hline
+        \multicolumn{2}{|l|}{Для второго текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtTo"\cr\hline
+        \multicolumn{2}{|l|}{Для третьего текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtResult"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{longtable}
+    \normalsize
+
+    На нажатие кнопки <<Добавить>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=228, lastline=233]{sources/table1/MyForm.h}
+
+    На нажатие кнопки <<Удалить>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=236, lastline=244]{sources/table1/MyForm.h}
+
+    На нажатие кнопки <<Подсчитать>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=247, lastline=338]{sources/table1/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:table1-11}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-11.png}
+        \caption{Окно приложения <<Таблица>>: начальный запуск}\label{fig:table1-11}
+    \end{figure}
+
+    При вводе корректных данных и нажатии кнопки <<Посчитать>> получаем результат (см. рисунок~\ref{fig:table1-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-2.png}
+        \caption{Окно приложения <<Таблица>>: корректный ввод}\label{fig:table1-02}
+    \end{figure}
+
+    При нажатии кнопки <<Добавить>> в таблицу добавляется новая строка (см. рисунок~\ref{fig:table1-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-3.png}
+        \caption{Окно приложения <<Таблица>>: добавление новой строки}\label{fig:table1-03}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить>> из таблицы удаляется выбранная строка (см. рисунок~\ref{fig:table1-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-4.png}
+        \caption{Окно приложения <<Таблица>>: удаление строки}\label{fig:table1-04}
+    \end{figure}
+
+    В случае, если в таблице есть пустые ячейки, получаем сообщение об ошибке (см. рисунок~\ref{fig:table1-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-5.png}
+        \caption{Окно приложения <<Таблица>>: пустые строки}\label{fig:table1-05}
+    \end{figure}
+
+    В случае, если в таблице есть ячейки, содержащие не целые числа, получаем сообщение об ошибке (см. рисунок~\ref{fig:table1-06}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-6.png}
+        \caption{Окно приложения <<Таблица>>: некорректный ввод}\label{fig:table1-06}
+    \end{figure}
+
+    В случае, если в поле для левой границы интервала введено не целое число, получаем сообщение об ошибке (см. рисунок~\ref{fig:table1-07}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-7.png}
+        \caption{Окно приложения <<Таблица>>: ошибка в левой границе интервала}\label{fig:table1-07}
+    \end{figure}
+
+    В случае, если в поле для правой границы интервала введено не целое число, получаем сообщение об ошибке (см. рисунок~\ref{fig:table1-08}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-8.png}
+        \caption{Окно приложения <<Таблица>>: ошибка в правой границе интервала}\label{fig:table1-08}
+    \end{figure}
+
+    В случае, если левая граница интервала больше, чем правая, получаем сообщение об ошибке (см. рисунок~\ref{fig:table1-09}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-9.png}
+        \caption{Окно приложения <<Таблица>>: некорректный интервал}\label{fig:table1-09}
+    \end{figure}
+
+    В случае, если в таблице нет чисел, не попадающих в заданный интервал, получаем сообщение об ошибке (см. рисунок~\ref{fig:table1-10}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table1/table1-10.png}
+        \caption{Окно приложения <<Таблица>>: отсутствие удовлетворяющих условию чисел}\label{fig:table1-10}
+    \end{figure}
+
+Полный код программы приведен в приложении~\ref{app:USB}.
+     
+\section{Работа с табличными данными. Часть 2}
+
+    \textsc{Задание.} Необходимо представить двумерный массив в виде таблицы \verb"DataGridView", содержащей произвольное количество строк и столбцов. Предусмотреть возможность добавления и удаления строк и столбцов. Провести проверку на ввод чисел. Все строки, содержащие минимальный элемент, заменить строкой \verb"X".
+
+    Создано окно приложения, содержащее три элемента \verb"DataGridView", пять элементов \verb"Button" и три элемента \verb"Label". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:table2-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-1.png}
+        \caption{Окно приложения <<Таблица 2>>, открытое в конструкторе}\label{fig:table2-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:table2-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Таблица 2>>}\label{tab:table2-attr}\cr\hline
+        \endfirsthead
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Таблица 2"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInput"\cr\hline
+        \verb"Text" & \verb"Входные данные"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblOutput"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей надписи}\cr\hline
+        \verb"(Name)" & \verb"lblTask"\cr\hline
+        \verb"Text" & \parbox{11cm}{\verb"Заменить все строки с минимальным элементом на заданную строку"}\cr\hline
+        \multicolumn{2}{|l|}{Для первой таблицы}\cr\hline
+        \verb"(Name)" & \verb"dataGridInput"\cr\hline
+        \multicolumn{2}{|l|}{Для второй таблицы}\cr\hline
+        \verb"(Name)" & \verb"dataGridOutput"\cr\hline
+        \verb"AllowUserToAddRows" & \verb"False"\cr\hline
+        \verb"AllowUserToDeleteRows" & \verb"False"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей таблицы}\cr\hline
+        \verb"(Name)" & \verb"dataGridRow"\cr\hline
+        \verb"AllowUserToAddRows" & \verb"False"\cr\hline
+        \verb"AllowUserToDeleteRows" & \verb"False"\cr\hline
+        
+        \multicolumn{2}{|l|}{Для первой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRowAdd"\cr\hline
+        \verb"Text" & \verb"Добавить строку"\cr\hline
+        \multicolumn{2}{|l|}{Для второй кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRowRemove"\cr\hline
+        \verb"Text" & \verb"Удалить строку"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnColAdd"\cr\hline
+        \verb"Text" & \verb"Добавить столбец"\cr\hline
+
+        \multicolumn{2}{|l|}{Для четвертой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnColRemove"\cr\hline
+        \verb"Text" & \verb"Удалить столбец"\cr\hline
+        \multicolumn{2}{|l|}{Для пятой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnColAdd"\cr\hline
+        \verb"Text" & \verb"Получить результат"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{longtable}
+    \normalsize
+
+    На нажатие кнопки <<Добавить строку>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=256, lastline=256]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Удалить строку>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=256, lastline=264]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Добавить столбец>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=259, lastline=264]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Удалить столбец>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=267, lastline=272]{sources/table2/MyForm.h}
+
+    На нажатие кнопки <<Получить результат>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=275, lastline=402]{sources/table2/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:table2-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-2.png}
+        \caption{Окно приложения <<Таблица 2>>: начальный запуск}\label{fig:table2-02}
+    \end{figure}
+
+    При нажатии кнопки <<Добавить строку>> в таблицу добавляется новая строка (см. рисунок~\ref{fig:table2-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-3.png}
+        \caption{Окно приложения <<Таблица 2>>: добавление новой строки}\label{fig:table2-03}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить строку>> из таблицы удаляется выбранная строка (см. рисунок~\ref{fig:table2-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-4.png}
+        \caption{Окно приложения <<Таблица 2>>: удаление строки}\label{fig:table2-04}
+    \end{figure}
+
+    При нажатии кнопки <<Добавить столбец>> в таблицу и строку замены добавляется новый столбец (см. рисунок~\ref{fig:table2-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-5.png}
+        \caption{Окно приложения <<Таблица 2>>: добавление столбца}\label{fig:table2-05}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить столбец>> из таблицы и из строки замены удаляется выбранный столбец (см. рисунок~\ref{fig:table2-06}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-6.png}
+        \caption{Окно приложения <<Таблица 2>>: удаление столбца}\label{fig:table2-06}
+    \end{figure}
+
+    При корректном вводе все строки, в которых есть минимальный элемент, заменяются строкой замены. Результат выводится в новую таблицу (см. рисунок~\ref{fig:table2-07}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/table2/table2-7.png}
+        \caption{Окно приложения <<Таблица 2>>: корректные данные}\label{fig:table2-07}
+    \end{figure}
+
+    При попытке замены строк из таблицы, в которой нет ни одной строки, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-08}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-8.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение об отсутствии строк}\label{fig:table2-08}
+    \end{figure}
+
+    При попытке замены строк из таблицы, в которой есть пустые ячейки, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-09}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-9.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о пустых ячейках}\label{fig:table2-09}
+    \end{figure}
+
+    При попытке замены строк из таблицы, в ячейках которой есть не целые числа, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-10}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-10.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о наличии не целых чисел в строке}\label{fig:table2-10}
+    \end{figure}
+
+    При попытке ввода пустых ячеек в строке замены возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-11}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-11.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о пустых ячейках строки}\label{fig:table2-11}
+    \end{figure}
+
+    При попытке ввода строки, в ячейках которой есть не целые числа, возникает сообщение об ошибке (см. рисунок~\ref{fig:table2-12}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.93]{images/table2/table2-12.png}
+        \caption{Окно приложения <<Таблица 2>>: сообщение о наличии не целых чисел в строке}\label{fig:table2-12}
+    \end{figure}
+
+Полный код программы приведен в приложении~\ref{app:USB}.
+
+\section{Работа с файлами}
+
+    \textsc{Задание.} Создать приложение для создания и редактирования массива данных с заданной структурой (используя табличную обработку данных). Организовать сохранение данных в файл и загрузку в форму из файла. Создать таблицу \verb"Travel", содержащую следующие поля: Фамилия, имя, отчество туриста, название гостиницы, срок пребывания, дата приезда, дата отъезда. Выполнить следующие действия: считать из файла и вывести на экран данные о всех туристах, в другой файл вывести данные о туристах, отдыхающих в данный день.
+
+    Создано окно приложения, содержащее два элемента \verb"DataGridView", шесть элементов \verb"Button", один элемент \verb"TextBox" и три элемента \verb"Label". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Для файловых диалогов в окно добавлен элемент \verb"saveFileDialog" и \verb"openFileDialog" Вид окна представлен на рисунке~\ref{fig:file-01}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-1.png}
+        \caption{Окно приложения <<Работа с файлами>>, открытое в конструкторе}\label{fig:file-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:file-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Работа с файлами>>}\label{tab:file-attr}\cr\hline
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Работа с файлами"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblAll"\cr\hline
+        \verb"Text" & \verb"Все туристы"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblOnlyDate"\cr\hline
+        \verb"Text" & \verb"Туристы в заданную дату"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей надписи}\cr\hline
+        \verb"(Name)" & \verb"lblChoose"\cr\hline
+        \verb"Text" & \verb"Выберите дату"\cr\hline
+        \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtDate"\cr\hline
+        \multicolumn{2}{|l|}{Для первой таблицы}\cr\hline
+        \verb"(Name)" & \verb"Travel"\cr\hline
+        \multicolumn{2}{|l|}{Для второй таблицы}\cr\hline
+        \verb"(Name)" & \verb"TravelFilter"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для первой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnAdd"\cr\hline
+        \verb"Text" & \verb"Добавить строку"\cr\hline
+        \multicolumn{2}{|l|}{Для второй кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRemove"\cr\hline
+        \verb"Text" & \verb"Удалить строку"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnSave"\cr\hline
+        \verb"Text" & \verb"Сохранить все"\cr\hline
+        \multicolumn{2}{|l|}{Для четвертой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnLoad"\cr\hline
+        \verb"Text" & \verb"Загрузить"\cr\hline
+        \multicolumn{2}{|l|}{Для пятой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnSave"\cr\hline
+        \verb"Text" & \verb"Выбрать по дате"\cr\hline
+        \multicolumn{2}{|l|}{Для шестой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnSaveChoose"\cr\hline
+        \verb"Text" & \verb"Сохранить выбранных"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+        \multicolumn{2}{|l|}{Для файлового диалога сохранения}\cr\hline
+        \verb"(Name)" & \verb"saveFileDialog"\cr\hline
+        \verb"Filter" & \verb"Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"\cr\hline
+        \multicolumn{2}{|l|}{Для файлового диалога открытия}\cr\hline
+        \verb"(Name)" & \verb"openFileDialog"\cr\hline
+        \verb"Filter" & \verb"Текстовые файлы (*.txt)|*.txt|Все файлы (*.*)|*.*"\cr\hline
+    \end{longtable}
+    \normalsize
+
+    На нажатие кнопки <<Добавить строку>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=511, lastline=512]{sources/file/MyForm.h}
+
+    На нажатие кнопки <<Удалить строку>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=516, lastline=520]{sources/file/MyForm.h}
+
+    На нажатие кнопки <<Сохранить все>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=410, lastline=507]{sources/file/MyForm.h}
+
+    На нажатие кнопки <<Загрузить>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=370, lastline=406]{sources/file/MyForm.h}
+
+    На нажатие кнопки <<Выбрать по дате>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=565, lastline=584]{sources/file/MyForm.h}
+
+    На нажатие кнопки <<Сохранить выбранных>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=523, lastline=562]{sources/file/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:file-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-2.png}
+        \caption{Окно приложения <<Работа с файлами>>: начальный запуск}\label{fig:file-02}
+    \end{figure}
+
+    При нажатии кнопки <<Добавить строку>> в таблицу добавляется новая строка (см. рисунок~\ref{fig:file-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-3.png}
+        \caption{Окно приложения <<Работа с файлами>>: добавление новой строки}\label{fig:file-03}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить строку>> из таблицы удаляется выбранная строка (см. рисунок~\ref{fig:file-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-4.png}
+        \caption{Окно приложения <<Работа с файлами>>: удаление строки}\label{fig:file-04}
+    \end{figure}
+
+    При нажатии кнопки <<Сохранить все>> происходит проверка введенных данных и открывается файловый диалог для сохранения файла с данными из верхней таблицы.
+
+    При нажатии кнопки <<Загрузить>> открывается файловый диалог для открытия файла с данными для верхней таблицы.
+
+    При нажатии кнопки <<Выбрать по дате>> в нижнюю таблицу переписываются удовлетворяющие введенным данным записи (см. рисунок~\ref{fig:file-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-5.png}
+        \caption{Окно приложения <<Работа с файлами>>: выбор по дате}\label{fig:file-05}
+    \end{figure}
+
+    При нажатии кнопки <<Сохранить выбранных>> открывается файловый диалог для сохранения файла с данными из нижней таблицы.
+
+    Если таблица пустая, возникает сообщение об ошибке (см. рисунок~\ref{fig:file-06}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-6.png}
+        \caption{Окно приложения <<Работа с файлами>>: пустая таблица}\label{fig:file-06}
+    \end{figure}
+
+    Если в таблице есть пустые ячейки, возникает сообщение об ошибке (см. рисунок~\ref{fig:file-07}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-7.png}
+        \caption{Окно приложения <<Работа с файлами>>: пустые ячейки}\label{fig:file-07}
+    \end{figure}
+
+    В случае ввода некорректной даты прибытия возникает сообщение об ошибке (см. рисунок~\ref{fig:file-08}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-8.png}
+        \caption{Окно приложения <<Работа с файлами>>: некорректная дата прибытия}\label{fig:file-08}
+    \end{figure}
+
+    В случае ввода некорректной даты отбытия возникает сообщение об ошибке (см. рисунок~\ref{fig:file-09}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-9.png}
+        \caption{Окно приложения <<Работа с файлами>>: некорректная дата отбытия}\label{fig:file-09}
+    \end{figure}
+
+    В случае, если дата прибытия больше даты отбытия, возникает сообщение об ошибке (см. рисунок~\ref{fig:file-10}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-10.png}
+        \caption{Окно приложения <<Работа с файлами>>: дата прибытия больше даты отбытия}\label{fig:file-10}
+    \end{figure}
+
+    В случае ввода неверной длительности пребывания возникает сообщение об ошибке (см. рисунок~\ref{fig:file-11}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-11.png}
+        \caption{Окно приложения <<Работа с файлами>>: неверная длительность пребывания}\label{fig:file-11}
+    \end{figure}
+
+    В случае ввода некорректной даты пребывания возникает сообщение об ошибке (см. рисунок~\ref{fig:file-12}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/file/file-12.png}
+        \caption{Окно приложения <<Работа с файлами>>: некорректная дата пребывания}\label{fig:file-12}
+    \end{figure}
+
+    Полный код программы приведен в приложении~\ref{app:USB}.
+
+\section{Использование коллекций}
+    \textsc{Задание.} Используя коллекции, создать приложение для работы с двусвязным списком. Создать двусвязный список, состоящий из целых чисел. Предусмотреть возможность создания списка из набора чисел, добавления одного элемента, удаления одного элемента, вывода результата на экран, удаления всех элементов с помощью кнопок. Найти сумму элементов, больших минимального нечетного элемента. Получить новый список, удалив все максимальные элементы.
+
+    Создано окно приложения, содержащее семь элементов \verb"Button", пять элементов \verb"TextBox" и пять элементов \verb"Label". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:collections-01}.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-1.png}
+        \caption{Окно приложения <<Работа с коллекциями>>, открытое в конструкторе}\label{fig:collections-01}
+    \end{figure}
+
+    У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:collections-attr}.
+    
+    \small
+    \begin{longtable}[l]{|l|l|}
+        \caption{Значения атрибутов элементов в приложении <<Работа с коллекциями>>}\label{tab:collections-attr}\cr\hline
+        Наименование атрибута & Значение\cr\hline
+        \multicolumn{2}{|l|}{Для формы}\cr\hline
+        \verb"Text" & \verb"Работа с коллекциями"\cr\hline
+        \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblInput"\cr\hline
+        \verb"Text" & \verb"Введите элементы списка"\cr\hline
+        \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+        \verb"(Name)" & \verb"lblAdd"\cr\hline
+        \verb"Text" & \verb"Добавить элемент"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей надписи}\cr\hline
+        \verb"(Name)" & \verb"lblRemove"\cr\hline
+        \verb"Text" & \verb"Удалить элемент"\cr\hline
+        \multicolumn{2}{|l|}{Для четвертой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblResult"\cr\hline
+        \verb"Text" & \verb"Результат"\cr\hline
+        \multicolumn{2}{|l|}{Для пятой надписи}\cr\hline
+        \verb"(Name)" & \verb"lblSum"\cr\hline
+        \verb"Text" & \verb"Сумма"\cr\hline
+        \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtInput"\cr\hline
+        \multicolumn{2}{|l|}{Для второго текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtAdd"\cr\hline
+        \multicolumn{2}{|l|}{Для третьего текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtRemove"\cr\hline
+        \multicolumn{2}{|l|}{Для четвертого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtResult"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для пятого текстового поля}\cr\hline
+        \verb"(Name)" & \verb"txtSum"\cr\hline
+        \verb"ReadOnly" & \verb"True"\cr\hline
+        \multicolumn{2}{|l|}{Для первой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnCreate"\cr\hline
+        \verb"Text" & \verb"Создать список"\cr\hline
+        \multicolumn{2}{|l|}{Для второй кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnClear"\cr\hline
+        \verb"Text" & \verb"Очистить список"\cr\hline
+        \multicolumn{2}{|l|}{Для третьей кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnAddFront"\cr\hline
+        \verb"Text" & \verb"В начало"\cr\hline
+        \multicolumn{2}{|l|}{Для четвертой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnAddBack"\cr\hline
+        \verb"Text" & \verb"В конец"\cr\hline
+        \multicolumn{2}{|l|}{Для пятой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRemove"\cr\hline
+        \verb"Text" & \verb"Удалить"\cr\hline
+        \verb"Enabled" & \verb"False"\cr\hline
+        \multicolumn{2}{|l|}{Для шестой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnRemoveAllMax"\cr\hline
+        \verb"Text" & \verb"Удалить все максимальные"\cr\hline
+        \verb"Enabled" & \verb"False"\cr\hline
+        \multicolumn{2}{|l|}{Для седьмой кнопки}\cr\hline
+        \verb"(Name)" & \verb"btnSum"\cr\hline
+        \verb"Text" & \verb"Сумма элементов, больших минимального нечетного"\cr\hline
+        \verb"Enabled" & \verb"False"\cr\hline
+        \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+        \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{longtable}
+    \normalsize
+
+    На нажатие кнопки <<Создать список>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=396, lastline=432]{sources/collections/MyForm.h}
+
+    На нажатие кнопки <<Очистить список>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=499, lastline=500]{sources/collections/MyForm.h}
+
+    На нажатие кнопки <<В начало>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=436, lastline=461]{sources/collections/MyForm.h}
+
+    На нажатие кнопки <<В конец>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=365, lastline=392]{sources/collections/MyForm.h}
+
+    На нажатие кнопки <<Удалить>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=465, lastline=495]{sources/collections/MyForm.h}
+
+    На нажатие кнопки <<Удалить все максимальные>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=504, lastline=515]{sources/collections/MyForm.h}
+
+    На нажатие кнопки <<Сумма элементов, больших минимального нечетного>> установлено выполнение следующего кода:
+    \lstinputlisting[firstline=330, lastline=361]{sources/collections/MyForm.h}
+
+    После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:collections-02}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-2.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: начальный запуск}\label{fig:collections-02}
+    \end{figure}
+
+    При нажатии кнопки <<Создать список>> создается новый список из элементов, введенных в соответствующее текстовое поле (см. рисунок~\ref{fig:collections-03}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-3.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: создание списка}\label{fig:collections-03}
+    \end{figure}
+
+    При нажатии кнопки <<Очистить список>> удаляется текущий список (см. рисунок~\ref{fig:collections-04}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-4.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: очистка списка}\label{fig:collections-04}
+    \end{figure}
+
+    При нажатии кнопки <<В начало>> в начало списка добавляется новый элемент из соответствующего текстового поля (см. рисунок~\ref{fig:collections-05}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-5.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: добавление в начало}\label{fig:collections-05}
+    \end{figure}
+
+    При нажатии кнопки <<В конец>> в конец списка добавляется новый элемент из соответствующего текстового поля (см. рисунок~\ref{fig:collections-06}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-6.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: добавление в конец}\label{fig:collections-06}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить>> из списка удаляется один элемент с указанным значением (см. рисунок~\ref{fig:collections-07}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-7.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: удаление элемента}\label{fig:collections-07}
+    \end{figure}
+
+    При нажатии кнопки <<Удалить все максимальные>> из списка удаляются все максимальные элементы (см. рисунок~\ref{fig:collections-08}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-8.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: удаление максимальных элементов}\label{fig:collections-08}
+    \end{figure}
+
+    При нажатии кнопки <<Сумма элементов, больших минимального нечетного>> в соответствующее текстовое поле выводится сумма всех элементов, больших минимального нечетного (см. рисунок~\ref{fig:collections-09}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-9.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: сумма элементов, больших минимального нечетного}\label{fig:collections-09}
+    \end{figure}
+
+    При попытки создания пустого списка возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-10}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-10.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: пустой список}\label{fig:collections-10}
+    \end{figure}
+
+    При попытки списка, состоящего не только из целых чисел, возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-11}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-11.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: не целые числа}\label{fig:collections-11}
+    \end{figure}
+
+    При попытки добавления пустого элемента в начало или конец возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-12}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-12.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: добавление пустого элемента}\label{fig:collections-12}
+    \end{figure}
+
+    При попытки добавления не целого числа в начало или конец возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-13}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-13.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: добавление не целого числа}\label{fig:collections-13}
+    \end{figure}
+
+    При попытки удаления элемента, значение которого не введено, возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-14}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-14.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: удаление невведенного элемента}\label{fig:collections-14}
+    \end{figure}
+
+    При попытки удаления элемента, значение которого не является целым числом, возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-15}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-15.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: удаление не целочисленного элемента}\label{fig:collections-15}
+    \end{figure}
+
+    При попытки удаления несуществующего элемента возникает сообщение об ошибке (см. рисунок~\ref{fig:collections-16}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{images/collections/collections-16.png}
+        \caption{Окно приложения <<Работа с коллекциями>>: удаление несуществующего элемента}\label{fig:collections-16}
+    \end{figure}
+
+
+    Полный код программы приведен в приложении~\ref{app:USB}.
+
+% Раздел "Заключение"
+\conclusion
+В ходе практики было реализовано несколько приложений на языке C++ в среде Microsoft Visual Studio с целью закрепления навыков построения оконного интерфейса. На практике разработаны приложения, содержащие такие элементы интерфейса как \verb"TextBox", \verb"Label", \verb"Button", \verb"DataGridView", \verb"OpenFileDialog", \verb"SaveFileDialog", \verb"ErrorProvider".
+
+% Список литературы
+\bibliographystyle{gost780uv}
+\bibliography{thesis}
+
+% Окончание основного документа и начало приложений
+% Каждая последующая секция документа будет являться приложением
+
+\appendix
+\section{USB-накопитель с отчетом о выполненной работе}\label{app:USB}
+На приложенном USB-накопителe можно ознакомиться со следующими файлами:
+\begin{description}
+\item[Папка \texttt{report}] "--- \LaTeX- вариант отчета о практике;
+\item[Папка \texttt{factorial}] "--- задание \No 1;
+\item[Папка \texttt{simpleCount}] "--- задание \No 2, вариант \No 6;
+\item[Папка \texttt{recursion}] "--- задание \No 3, вариант \No 13;
+\item[Папка \texttt{table1}] "--- задание \No 4, вариант \No 7;
+\item[Папка \texttt{table2}] "--- задание \No 5, вариант \No 9;
+\item[Папка \texttt{file}] "--- задание \No 6, вариант \No 10;
+\item[Папка \texttt{collections}] "--- задание \No 7, вариант \No 9;
+\item[\texttt{report.pdf}] "--- отчет о практике.
+\end{description}
+
+\end{document}

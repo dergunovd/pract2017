@@ -1,0 +1,146 @@
+\documentclass[bachelor, och, pract]{SCWorks}
+% параметр - тип обучения - одно из значений:
+%    spec     - специальность
+%    bachelor - бакалавриат (по умолчанию)
+%    master   - магистратура
+% параметр - форма обучения - одно из значений:
+%    och   - очное (по умолчанию)
+%    zaoch - заочное
+% параметр - тип работы - одно из значений:
+%    referat    - реферат
+%    coursework - курсовая работа (по умолчанию)
+%    diploma    - дипломная работа
+%    pract      - отчет по практике
+%    pract      - отчет о научно-исследовательской работе
+%    autoref    - автореферат выпускной работы
+%    assignment - задание на выпускную квалификационную работу
+%    review     - отзыв руководителя
+%    critique   - рецензия на выпускную работу
+% параметр - включение шрифта
+%    times    - включение шрифта Times New Roman (если установлен)
+%               по умолчанию выключен
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage{graphicx}
+
+\usepackage[sort,compress]{cite}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{array}
+\usepackage[english,russian]{babel}
+
+\usepackage[colorlinks=true]{hyperref}
+
+\newcommand{\eqdef}{\stackrel {\rm def}{=}}
+\newcommand{\No}{\textnumero}
+\newtheorem{lem}{Лемма}
+
+\lstset{
+	breaklines=true, 
+	language=C,
+	numberstyle=\tiny, 
+	numbers=left, 
+	columns=flexible,
+	keepspaces=false, 
+	basicstyle=\small,
+	inputencoding=cp1251
+}
+\begin{document}
+
+\section{Приложение для вычисления факториала}
+
+\textsc{Задание.} Реализовать приложение для вычисления факториала.
+
+Создано окно приложения, содержащее два элемента \verb"TextBox", два элемента \verb"Label" и один элемент \verb"Button". Для отображения сообщений об ошибках в окно добавлен элемент \verb"ErrorProvider". Вид окна представлен на рисунке~\ref{fig:fact-01}.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.7]{images/fact/fact-1.png}
+    \caption{Окно приложения <<Факториал>> открытое в конструкторе}\label{fig:fact-01}
+\end{figure}
+
+У элементов изменены значения некоторых атрибутов. Значения измененных атрибутов представлены в таблице~\ref{tab:fact-attr}.
+\begin{table}[!ht]
+    \small
+    \caption{Значения атрибутов элементов в приложении <<Факториал>>}\label{tab:fact-attr}
+    \begin{tabular}{|l|l|}\hline
+    Наименование атрибута & Значение\cr\hline
+    \multicolumn{2}{|l|}{Для формы}\cr\hline
+    \verb"Text" & \verb"Факториал"\cr\hline
+    \multicolumn{2}{|l|}{Для первой надписи}\cr\hline
+    \verb"(Name)" & \verb"lblInput"\cr\hline
+    \verb"Text" & \verb"Введите целое число"\cr\hline
+    \multicolumn{2}{|l|}{Для второй надписи}\cr\hline
+    \verb"(Name)" & \verb"lblOutput"\cr\hline
+    \verb"Text" & \verb"Результат"\cr\hline
+    \multicolumn{2}{|l|}{Для первого текстового поля}\cr\hline
+    \verb"(Name)" & \verb"txtInput"\cr\hline
+    \multicolumn{2}{|l|}{Для второго текстового поля}\cr\hline
+    \verb"(Name)" & \verb"txtOutput"\cr\hline
+    \verb"ReadOnly" & \verb"True"\cr\hline
+    \multicolumn{2}{|l|}{Для кнопки}\cr\hline
+    \verb"(Name)" & \verb"btnCalculate"\cr\hline
+    \verb"Text" & \verb"Вычислить"\cr\hline
+    \multicolumn{2}{|l|}{Для обработчика ошибок}\cr\hline
+    \verb"(Name)" & \verb"errorProvider"\cr\hline
+    \end{tabular}
+\end{table}
+
+Была написана функция вычисления факториала:
+\lstinputlisting[firstline=2, lastline=10]{sources/fact/fact.cpp}
+
+На нажатие кнопки <<Вычислить>> установлено выполнение следующего кода:
+\lstinputlisting[firstline=145, lastline=165]{sources/fact/MyForm.h}
+
+После запуска приложения на экране появляется окно (см. рисунок~\ref{fig:fact-02}).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.7]{images/fact/fact-2.png}
+    \caption{Окно приложения <<Факториал>>: начальный запуск}\label{fig:fact-02}
+\end{figure}
+
+При вводе целого числа после нажатия кнопки в поле вывода приводится результат вычисления факториала для заданного числа (см. рисунок~\ref{fig:fact-03}).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.7]{images/fact/fact-3.png}
+    \caption{Окно приложения <<Факториал>>: корректное вычисление}\label{fig:fact-03}
+\end{figure}
+
+При вводе некорректного значения возникает сообщение об ошибке (см. рисунок~\ref{fig:fact-04}).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.7]{images/fact/fact-4.png}
+    \caption{Окно приложения <<Факториал>>: сообщение о некорректном вводе}\label{fig:fact-04}
+\end{figure}
+
+При вводе слишком большого положительного числа возникает сообщение об ошибке (см. рисунок~\ref{fig:fact-05}).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.7]{images/fact/fact-5.png}
+    \caption{Окно приложения <<Факториал>>: ввод слишком большого положительного числа}\label{fig:fact-05}
+\end{figure}
+
+При вводе отрицательного числа возникает сообщение об ошибке (см. рисунок~\ref{fig:fact-06}).
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.7]{images/fact/fact-6.png}
+    \caption{Окно приложения <<Факториал>>: ввод отрицательного числа}\label{fig:fact-06}
+\end{figure}
+
+Полный код программы приведен в приложении~\ref{app:listing}.
+
+\appendix
+\section{Листинг файлов проекта}\label{app:listing}
+\subsection{Листинг файла factorial.cpp}
+\lstinputlisting{sources/fact/factorial.cpp}
+
+\subsection{Листинг файла fact.cpp}
+\lstinputlisting{sources/fact/fact.cpp}
+
+\subsection{Листинг файла MyForm.h}
+\lstinputlisting{sources/fact/MyForm.h}
+
+\end{document}
