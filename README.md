@@ -1,9 +1,1 @@
-# СГУ КНиИТ ПИ Летняя учебная практика 2017
-## factorial
-Вычисление факториала
-
-## simpleCount
-Простые вычисления
-
-## report
-Отчеты
+# Summer Practive, CS&IT, Programming Enginering, SSU 2017
